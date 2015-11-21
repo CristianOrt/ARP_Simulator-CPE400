@@ -1,0 +1,13 @@
+#include "Network.h"
+#include "Router.h"
+#include "Device.h"
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+
+cout << it works << endl;
+return 0;
+}

@@ -7,7 +7,7 @@ C11 =	-std=c++11
 LIBS =
 
 # objects
-OBJS = ../bin/Network.o ../bin/Router.o ../bin/Device.o ../bin/ARPSim.o
+OBJS = ../bin/Network.o ../bin/Router.o ../bin/Device.o 
 
 # Main Target Executable files
 TARGET = ../bin/ARPSim.out

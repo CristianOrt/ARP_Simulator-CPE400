@@ -10,12 +10,12 @@ Network();
 ~Network();
 
 //Display
-void DisplayTutorial();
-void DisplayMainMenu();
+DisplayTutorial();
+DisplayMainMenu();
 
 //Simulate
-void SimulateARP();
-void SimulateSpoofing();
+SimulateARP();
+SimulateSpoofing();
 
 
 
