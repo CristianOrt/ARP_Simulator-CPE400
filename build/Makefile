@@ -7,7 +7,7 @@ C11 =	-std=c++11
 LIBS =
 
 # objects
-OBJS = ../bin/Network.o ../bin/Router.o ../bin/Device.o ../bin/ARPSim.o
+OBJS = ../bin/Network.o ../bin/Router.o ../bin/AddressGenerator.o ../bin/LAN.o ../bin/Device.o ../bin/ARPSim.o
 
 # Main Target Executable files
 TARGET = ../bin/ARPSim.out
@@ -27,8 +27,15 @@ $(TARGET): $(OBJS)
 ../bin/Router.o: ../src/Router.cpp ../src/Router.h
 	$(CC) $(C11) -c ../src/Router.cpp -o ../bin/Router.o
 
+../bin/AddressGenerator.o:	../src/AddressGenerator.cpp	../src/AddressGenerator.h
+	$(CC) $(C11) -c ../src/AddressGenerator.cpp -o ../bin/AddressGenerator.o
+
+../bin/LAN.o: ../src/LAN.cpp ../src/LAN.h 
+	$(CC) $(C11) -c ../src/LAN.cpp -o ../bin/LAN.o 
+
 ../bin/Device.o: ../src/Device.cpp ../src/Device.h
 	$(CC) $(C11) -c ../src/Device.cpp -o ../bin/Device.o
+
 
 run:
 	./$(TARGET)

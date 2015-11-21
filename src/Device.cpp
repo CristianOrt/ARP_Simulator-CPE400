@@ -1,10 +1,10 @@
 #include "Device.h"
 
-Device::Device(std::string name){
+Device::Device(std::string name, std::string mac, std::string ip){
 //assign id, macAddr, ipAddr
 id = name;
-//macAddr = genMac;
-//ipAddr = genIp;
+macAddr = mac;
+ipAddr = ip;
 }
 bool Device::insertToArpTable(std::string mac, std::string ip, bool isStatic){
 //if not found then insert it and return true;

@@ -7,7 +7,7 @@
 struct arpEntry{
 bool isStatic;
 std::string macAddr;
-bool init;
+bool init = false;
 };
 
 struct packet{
@@ -19,8 +19,8 @@ std::string message;
 class Device{
 public:
 //Constructors
-Device(std::string name);
-~Device();
+Device(std::string name, std::string mac, std::string ip);
+~Device(){};
 
 //sets & gets
 void setId(std::string name){id = name;};
