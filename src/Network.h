@@ -1,8 +1,13 @@
 #ifndef NETWORK_H
 #define NETWORK_H
-
+#include <string>
 #include "Router.h"
 
+struct packet{
+std::string srcMac;
+std::string destMac;
+std::string message;
+};
 class Network {
 public:
 //Constructor & Destructor
@@ -16,6 +21,10 @@ void DisplayMainMenu();
 //Simulate
 void SimulateARP();
 void SimulateSpoofing();
+
+//helpers
+void sendMessage();
+void broadcast();
 
 
 

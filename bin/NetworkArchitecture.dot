@@ -1,0 +1,34 @@
+digraph Network {
+		main[shape=none, margin=0, label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="2">
+	<TR><TD COLSPAN="3">main</TD></TR>
+</TABLE>>];
+		LAN_A[shape=none, margin=0, label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="2">
+	<TR><TD COLSPAN="3">LAN_A</TD></TR>
+	<TR><TD COLSPAN="3">IP: 192.16.12.00</TD></TR>
+</TABLE>>];
+		Device_A[shape=none, margin=0, label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="3">
+	<TR><TD COLSPAN="3">Device_A</TD></TR>
+	<TR><TD COLSPAN="3">IP: 192.16.12.01</TD></TR>
+	<TR><TD COLSPAN="3">MAC: 1A.78.6D.01</TD></TR>
+</TABLE>>];
+edge [color=black];
+LAN_A -> Device_A
+main ->LAN_A
+		LAN_B[shape=none, margin=0, label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="2">
+	<TR><TD COLSPAN="3">LAN_B</TD></TR>
+	<TR><TD COLSPAN="3">IP: 192.54.46.00</TD></TR>
+</TABLE>>];
+		Device_B[shape=none, margin=0, label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="3">
+	<TR><TD COLSPAN="3"><FONT COLOR="red">Device_B</FONT></TD></TR>
+	<TR><TD COLSPAN="3">IP: 192.54.46.02</TD></TR>
+	<TR><TD COLSPAN="3">MAC: 24.56.8D02</TD></TR>
+</TABLE>>];
+edge [color=red];
+LAN_B -> Device_B
+main ->LAN_B
+}

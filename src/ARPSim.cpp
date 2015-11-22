@@ -8,13 +8,16 @@ using namespace std;
 
 int main()
 {
-LAN A("1A.78.6D.", "192.16.12.", "LAN_A");
-A.insertChild("Device_A");
-A.insertChild("Device_B");
-A.insertChild("Device_C");
-A.Display();
-A.GenerateGraphviz("Network_Architecture");
 
+Router router("main");
+LAN A("1A.78.6D.", "192.16.12.", "LAN_A");
+router.insertLAN(A);
+router.insertDevice("LAN_A", "Device_A",false);
+LAN B("24.56.8D","192.54.46.","LAN_B");
+router.insertLAN(B);
+router.insertDevice("LAN_B","Device_B",true);
+router.Display();
+router.GenerateGraphviz("NetworkArchitecture");
 return 0;
 }
 	

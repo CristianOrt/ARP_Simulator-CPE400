@@ -1,3 +1,5 @@
+#ifndef LAN_H
+#define LAN_H
 #include <string>
 #include <vector>
 #include <iostream>
@@ -5,26 +7,27 @@
 #include <fstream>
 #include "Device.h"
 #include "AddressGenerator.h"
+
 class LAN{
 public:
 	//Constructors
 	LAN(std::string macPrefix, std::string ipPrefix, std::string name);
 	~LAN(){};
+	std::string getId(){return id;};
 
-	void insertChild(std::string deviceName);
-	//broadcast to every child in LAN
-	void broadcastChild(Device child, packet bPacket);
+	bool insertChild(std::string deviceName, bool MITM = false);
+
+
 	//GenerateGraphiz
-	void GenerateGraphviz(const std::string& file_name) const;
+	void GenerateGraphviz(std::ofstream& fout) const;
 
 	void Display(){
 		std::cout << "LAN: " << id <<  " ip: " << ip << std::endl;
-		for(auto child : children){
-			std::cout << "Device: " << child.getId() << " mac: " << child.getMacAddr();
-			std::cout << " ip: " << child.getIpAddr(); 
+		for(std::vector<Device>::iterator child = children.begin(); child != children.end(); ++child){
+			std::cout << "Device: " << child->getId() << " mac: " << child->getMacAddr();
+			std::cout << " ip: " << child->getIpAddr(); 
 			std::cout << std::endl;
 		}
-
 	};
 	
 private:
@@ -35,3 +38,4 @@ static AddressGenerator ipGen;
 std::vector<Device> children;
 
 };
+#endif
