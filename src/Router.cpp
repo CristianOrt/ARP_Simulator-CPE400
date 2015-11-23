@@ -103,3 +103,20 @@ Device* Router::findDevice(std::string devId, bool &valid)
 	}
 	return childDev;
 }
+LAN* Router::findLAN(std::string devId, bool& valid)
+{
+	//traverse each LAN
+	Device* childDev = NULL;
+	LAN* childLAN = NULL;
+
+	for( int i=0; i < children.size(); i++)
+	{
+		childLAN = &children[i];
+		childDev = childLAN->find(devId, valid);
+		if(valid)
+		{
+			return childLAN;
+		}
+	}
+	return childLAN;
+}

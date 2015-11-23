@@ -29,7 +29,7 @@ void broadcast();
 void insertStaticEntry();
 void insertDeviceDisplay();
 void insertLANDisplay();
-void sendMessage(Device src, Device dest);
+void sendMessage();
 
 
 

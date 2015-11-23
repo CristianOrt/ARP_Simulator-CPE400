@@ -90,3 +90,7 @@ Device* LAN::find(std::string devId, bool& valid)
 	valid = false;
 	return child;
 }
+bool LAN::broadcast(std::string ipDest)
+{
+	
+}

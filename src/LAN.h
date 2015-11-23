@@ -13,8 +13,10 @@ public:
 	LAN(std::string macNum, std::string ipNum, std::string name);
 	~LAN(){};
 	std::string getId(){return id;};
+	std::string getIp(){return ip;};
 
 	bool insertChild(std::string deviceName, bool MITM = false);
+	bool broadcast(std::string ipDest);
 	std::string macGen();
 	std::string ipGen();
 	Device* find(std::string devId, bool& valid);
@@ -34,6 +36,7 @@ public:
 		}
 	};
 	
+std::vector<Device> children;
 private:
 std::string ip;
 std::string id;
@@ -41,7 +44,6 @@ std::string ipPrefix;
 std::string macPrefix;
 int macCount;
 int ipCount;
-std::vector<Device> children;
 
 };
 #endif

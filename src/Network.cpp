@@ -60,7 +60,7 @@ void Network::DisplayMainMenu()
 				break;
 
 			case 'd':
-				//sendMessage();
+				sendMessage();
 
 				break;
 
@@ -166,7 +166,253 @@ void Network::insertLANDisplay()
 	LAN temp(macPre, ipPre, lanName);
 	if(!mainRouter.insertLAN(temp)){std::cout << "LAN already exists" << std::endl;}
 }
-void Network::sendMessage(Device src, Device dest)
+void Network::sendMessage()
 {
+	//find both devices
+	bool valid;
+	char buf;
+	std::string devOne, devTwo, message;
+	Device* src;
+	Device* dest;
+	LAN* lanOne;
+	LAN* lanTwo;
+	LAN* lanTemp;
+
+	//find one
+	std::cout << "Source Device Name: ";
+	std::cin >> devOne;
+	src = mainRouter.findDevice(devOne, valid);
+	if(!valid)
+	{
+		std::cout << devOne << "not found";
+		return;
+	}
+
+	//find two
+	std::cout << "Destination Device Name: ";
+	std::cin >> devTwo;
+	dest = mainRouter.findDevice(devTwo, valid);
+	if(!valid)
+	{
+		std::cout << devTwo << "not found" << std::endl;
+		return;
+	}
+
+	//find both LANs
+	lanOne = mainRouter.findLAN(devOne, valid);
+	lanTwo = mainRouter.findLAN(devTwo, valid);
+
+	std::cout << "Message(no spaces): " << std::endl;
+	std::cin >> message;
+
+	//Same LAN's
+	if(lanOne->getId() == lanTwo->getId())
+	{
+		//normal ArP simulate
+		std::cout << "ARP Simulate press any letter to continue" << std::endl;
+		std::cin >> buf;
+
+		//check if src arp table has dest's mac by using its ip
+		if(!src->arpTable[dest->getIpAddr()].init)
+		{
+
+			std::cout << "broadcasting" << std::endl;
+			std::cout << "Source ID: " << src->getId() << std::endl;
+			std::cout << "Source MAC: " << src->getMacAddr() << std::endl;
+			std::cout << "Destination MAC: FF-FF-FF-FF-FF-FF " << std::endl;
+			std::cout << "Message: Are you Ip: " << dest->getIpAddr() << std::endl;
+			std::cout << "press any letter to continue" << std::endl;
+			std::cin >> buf;
+
+			//first child is always the MITM
+			if(lanOne->children[0].getIsMITM() && (lanOne->children[0].getId() != src->getId()))
+			{
+				arpEntry temp;
+				temp.isStatic = false;
+ 				temp.MITM = true;
+				temp.macAddr = lanOne->children[0].getMacAddr();
+				temp.init = true;
+
+				std::cout << "Spoofing packet" << std::endl;
+				std::cout << "Source ID: " << lanOne->children[0].getId() << std::endl;
+				std::cout << "Source MAC: " << lanOne->children[0].getMacAddr() << std::endl;
+				std::cout << "Destination MAC: " << src->getMacAddr() <<std::endl;
+				std::cout << "Yea that's me!!" << std::endl << std::endl;
+				std::cout << "press any letter to continue" << std::endl;
+				std::cin >> buf;
+				std::cout << "Updates arpTable with new entry found" << std::endl;
+				src->arpTable[dest->getIpAddr()] = temp;
+				std::cout << "press any letter to continue" << std::endl;
+				std::cin >> buf;
+			}
+			else
+			{
+				arpEntry temp;
+				temp.isStatic = false;
+ 				temp.MITM = false;
+				temp.macAddr = dest->getMacAddr();
+				temp.init = true;
+				std::cout << "Packet" << std::endl;
+				std::cout << "Source ID: " << dest->getId() << std::endl;
+				std::cout << "Source MAC: " << dest->getMacAddr() << std::endl;
+				std::cout << "Destination MAC: " << src->getMacAddr() <<std::endl;
+				std::cout << "Yea that's me!!" << std::endl << std::endl;
+				std::cout << "press any letter to continue" << std::endl;
+				std::cin >> buf;
+				std::cout << "Updates arpTable with new entry found" << std::endl;
+				src->arpTable[dest->getIpAddr()] = temp;
+				std::cout << "press any letter to continue" << std::endl;
+				std::cin >> buf;
+			}
+
+		}
+			//does so construct packet and simulate ARP
+		arpEntry destInfo = src->arpTable[dest->getIpAddr()];
+
+		std::cout << "Packet Info" << std::endl;
+		std::cout << "Source ID: " << src-> getId() << std::endl;
+		std::cout << "Source MAC: " << src->getMacAddr() << std::endl;
+		std::cout << "Destination MAC: " << destInfo.macAddr << std::endl;
+		std::cout << "Message: " << message << std::endl;
+		std::cout << "packet delivered" << std::endl;
+		std::cout << "press any letter to continue" << std::endl;
+		std::cin >> buf;
+	}
+	else
+	{
+	//Different LANs
+		//Arp proxy
+		std::cout << "ARP Proxy Simulate press any letter to continue" << std::endl;
+		std::cin >> buf;
+		//check if src arp table has dest's mac by using dest's ip
+		if(!src->arpTable[dest->getIpAddr()].init)
+		{
+			std::cout << "broadcasting" << std::endl;
+			std::cout << "Source ID: " << src->getId() << std::endl;
+			std::cout << "Source MAC: " << src->getMacAddr() << std::endl;
+			std::cout << "Destination MAC: FF-FF-FF-FF-FF-FF " << std::endl;
+			std::cout << "Message: Are you Ip: " << dest->getIpAddr() << std::endl;
+			std::cout << "press any letter to continue" << std::endl;
+			std::cin >> buf;
+
+			//traverse all the lan's
+			for( int i=0; i < mainRouter.children.size(); i++)
+			{
+				LAN* lanTemp = &mainRouter.children[i];
+				if(lanTemp->children[0].getIsMITM() && (lanTemp->getId() != lanOne->getId()))
+				{
+				arpEntry temp;
+				temp.isStatic = false;
+ 				temp.MITM = false;
+				temp.macAddr = lanTemp->children[0].getMacAddr();
+				temp.init = true;
+
+				std::cout << "Spoofing packet" << std::endl;
+				std::cout << "Source ID: " << lanTemp->children[0].getId() << std::endl;
+				std::cout << "Source MAC: " << lanTemp->children[0].getMacAddr() << std::endl;
+				std::cout << "Source Ip: " << dest->getIpAddr() << std::endl;
+				std::cout << "Destination Ip: " << lanTemp->getIp() << std::endl;
+				std::cout << "Destination MAC: " << src->getMacAddr() <<std::endl;
+				std::cout << "Message: Yea that's me!!" << std::endl << std::endl;
+				std::cout << "press any letter to continue" << std::endl;
+				std::cout << "sending message to router." << std::endl;
+				std::cin >> buf;
+				std::cout << "packet gets incapuslated in an ip datagram" << std::endl;
+				std::cout << "then the router changes the ip and to the next arpCache" << std:: endl;
+				std::cout << "with the address of the real destination" << std::endl;
+				std::cout << "press any letter to continue" << std::endl;
+				std::cin >> buf;
+				std::cout << "Spoofing packet" << std::endl;
+				std::cout << "Source ID: " << lanTemp->children[0].getId() << std::endl;
+				std::cout << "Source MAC: " << lanTemp->children[0].getMacAddr() << std::endl;
+				std::cout << "Source Ip: " << lanOne->getIp() << std::endl;
+				std::cout << "Destination Ip: " << src->getIpAddr() << std::endl;
+				std::cout << "Destination MAC: " << src->getMacAddr() <<std::endl;		
+				std::cout << "Message: Yea that's me!!" << std::endl << std::endl;
+				std::cout << "press any letter to continue" << std::endl;
+				
+
+				std::cout << "Updates arpTable with new entry found" << std::endl;
+				src->arpTable[dest->getIpAddr()] = temp;
+				std::cout << "press any letter to continue" << std::endl;
+				std::cin >> buf;
+				}
+				else
+				{
+					//traverse all the children
+					for(int j=0; j < lanTemp->children.size();j++)
+					{
+						if(lanTemp->children[j].getMacAddr() == dest->getMacAddr())
+						{
+						arpEntry temp;
+						temp.isStatic = false;
+		 				temp.MITM = true;
+						temp.macAddr = dest->getMacAddr();
+						temp.init = true;
+
+						std::cout << "Packet Info" << std::endl;
+						std::cout << "Source ID: " << lanTemp->children[j].getId() << std::endl;
+						std::cout << "Source MAC: " << lanTemp->children[j].getMacAddr() << std::endl;
+						std::cout << "Source Ip: " << dest->getIpAddr() << std::endl;
+						std::cout << "Destination Ip: " << lanTemp->getIp() << std::endl;
+						std::cout << "Destination MAC: " << src->getMacAddr() <<std::endl;
+						std::cout << "Message: Yea that's me!!" << std::endl << std::endl;
+						std::cout << "press any letter to continue" << std::endl;
+						std::cout << "sending message to router." << std::endl;
+						std::cin >> buf;
+						std::cout << "packet gets incapuslated in an ip datagram" << std::endl;
+						std::cout << "then the router changes the ip and to the next arpCache" << std:: endl;
+						std::cout << "with the address of the real destination" << std::endl;
+						std::cout << "press any letter to continue" << std::endl;
+						std::cin >> buf;
+						std::cout << "Packet Info" << std::endl;
+						std::cout << "Source ID: " << lanTemp->children[j].getId() << std::endl;
+						std::cout << "Source MAC: " << lanTemp->children[j].getMacAddr() << std::endl;
+						std::cout << "Source Ip: " << lanOne->getIp() << std::endl;
+						std::cout << "Destination Ip: " << src->getIpAddr() << std::endl;
+						std::cout << "Destination MAC: " << src->getMacAddr() <<std::endl;
+						std::cout << "Message: Yea that's me!!" << std::endl << std::endl;
+						std::cout << "press any letter to continue" << std::endl;
+
+						std::cout << "Updates arpTable with new entry found" << std::endl;
+						src->arpTable[dest->getIpAddr()] = temp;
+						std::cout << "press any letter to continue" << std::endl;
+						std::cin >> buf;
+						}
+					}
+				}
+			}
+		}
+		arpEntry destInfo = src->arpTable[dest->getIpAddr()];
+
+		std::cout << "Packet Info" << std::endl;
+		std::cout << "Source MAC: " << src->getMacAddr() << std::endl;
+		std::cout << "Source Ip: " << src->getIpAddr() << std::endl;
+		std::cout << "Destination Ip: " << lanOne->getIp() << std::endl;
+		std::cout << "Destination MAC: " << destInfo.macAddr << std::endl;
+		std::cout << "Message: " << message << std::endl;
+		std::cout << "press any letter to continue" << std::endl;
+		std::cin >> buf;
+		std::cout << "packet gets incapuslated in an ip datagram" << std::endl;
+		std::cout << "then the router changes the ip and to the next arpCache" << std:: endl;
+		std::cout << "with the address of the real destination" << std::endl;
+		std::cout << "press any letter to continue" << std::endl;
+		std::cin >> buf;
+		std::cout << "Packet Info" << std::endl;
+		std::cout << "Source MAC: " << src->getMacAddr() << std::endl;
+		std::cout << "Source Ip: " << lanOne->getIp() << std::endl;
+		std::cout << "Destination Ip: " << lanTwo->getIp() << std::endl;
+		std::cout << "Destination MAC: " << destInfo.macAddr << std::endl;
+		std::cout << "Message: " << message << std::endl;
+		std::cout << "press any letter to continue" << std::endl;
+		std::cout << "Packet was delivered succesfully" << std::endl;
+		//does so construct packets
+			//from src to srclan transfer to new message and destlan to dest
+
+
+
+
+
+	}
 
 }

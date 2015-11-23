@@ -8,14 +8,6 @@ digraph Network {
 	<TR><TD COLSPAN="3">LAN_A</TD></TR>
 	<TR><TD COLSPAN="3">IP: 192.14.15.00</TD></TR>
 </TABLE>>];
-		Dev_B[shape=none, margin=0, label=<
-<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="3">
-	<TR><TD COLSPAN="3"><FONT COLOR="red">Dev_B</FONT></TD></TR>
-	<TR><TD COLSPAN="3">IP: 192.14.15.02</TD></TR>
-	<TR><TD COLSPAN="3">MAC: 01-23-98-ab-89-02</TD></TR>
-</TABLE>>];
-edge [color=black];
-LAN_A -> Dev_B
 		Dev_A[shape=none, margin=0, label=<
 <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="3">
 	<TR><TD COLSPAN="3">Dev_A</TD></TR>
@@ -24,5 +16,27 @@ LAN_A -> Dev_B
 </TABLE>>];
 edge [color=black];
 LAN_A -> Dev_A
+		Dev_B[shape=none, margin=0, label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="3">
+	<TR><TD COLSPAN="3">Dev_B</TD></TR>
+	<TR><TD COLSPAN="3">IP: 192.14.15.02</TD></TR>
+	<TR><TD COLSPAN="3">MAC: 01-23-98-ab-89-02</TD></TR>
+</TABLE>>];
+edge [color=black];
+LAN_A -> Dev_B
 main ->LAN_A
+		LAN_B[shape=none, margin=0, label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="2">
+	<TR><TD COLSPAN="3">LAN_B</TD></TR>
+	<TR><TD COLSPAN="3">IP: 158.265.36.00</TD></TR>
+</TABLE>>];
+		Dev_C[shape=none, margin=0, label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="3">
+	<TR><TD COLSPAN="3">Dev_C</TD></TR>
+	<TR><TD COLSPAN="3">IP: 158.265.36.01</TD></TR>
+	<TR><TD COLSPAN="3">MAC: 12-48-78-95-69-01</TD></TR>
+</TABLE>>];
+edge [color=black];
+LAN_B -> Dev_C
+main ->LAN_B
 }
