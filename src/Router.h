@@ -6,10 +6,13 @@
 
 class Router{
 public:
-Router(std::string name);
+Router(){};
 ~Router(){};
+void setName(std::string name){id = name;};
 bool insertLAN(LAN temp);
 bool insertDevice(std::string LANId, std::string deviceId, bool MITM = false);
+LAN* find(std::string lanId, bool& valid);
+Device* findDevice(std::string devId, bool &valid);
 
 void GenerateGraphviz(const std::string& file_name) const;
 

@@ -2,15 +2,14 @@
 
 using namespace std;
 
-AddressGenerator LAN::macGen;
-AddressGenerator LAN::ipGen;
 
-LAN::LAN(std::string macPrefix, std::string ipPrefix, std::string name)
+LAN::LAN(std::string macNum, std::string ipNum, std::string name)
 {
 id = name;
-ip = ipPrefix + "00";
-ipGen.setPrefix(ipPrefix);
-macGen.setPrefix(macPrefix);
+ip = ipNum + "00";
+ipPrefix = ipNum;
+macPrefix = macNum;
+ipCount = macCount = 1;
 }
 
 bool LAN::insertChild(std::string deviceName, bool MITM)
@@ -20,10 +19,34 @@ bool LAN::insertChild(std::string deviceName, bool MITM)
       if(child.getId() == deviceName){return false;}
     }
 
- Device child(deviceName, macGen.GenerateTicket() , ipGen.GenerateTicket(), MITM);
+ Device child(deviceName, macGen() , ipGen(), MITM);
+ //push to front of vector
+ if(MITM)
+ {
+ 	std::vector<Device>::iterator it;
+ 	it = children.begin();
+ 	children.insert(it,child);
+ }
+ else{
  children.push_back(child);
+}
  return true;
 }
+
+std::string LAN::macGen()
+{
+  char buffer[macPrefix.size() + 2];
+  sprintf(buffer, "%s%02d", macPrefix.c_str(), macCount++);
+  return string(buffer);
+}
+
+std::string LAN::ipGen()
+{
+  char buffer[ipPrefix.size() + 2];
+  sprintf(buffer, "%s%02d", ipPrefix.c_str(), ipCount++);
+  return string(buffer);
+}
+
 
 void LAN::GenerateGraphviz(std::ofstream& fout) const
 {
@@ -47,10 +70,23 @@ void LAN::GenerateGraphviz(std::ofstream& fout) const
   	temp = "MAC: " + child.getMacAddr();
   	fout << "\t<TR><TD COLSPAN=\"3\">" << temp << "</TD></TR>" << endl;
   	fout << "</TABLE>>];" << endl;
-    
-    if(child.getIsMITM()){fout << "edge [color=red];" << endl;}
-    else{fout << "edge [color=black];" << endl;}
+    fout << "edge [color=black];" << endl;
     fout << id << " -> "; 
     fout << child.getId()<< endl;
   }
+}
+Device* LAN::find(std::string devId, bool& valid)
+{
+	Device* child = NULL;
+	for( int i=0; i < children.size(); i++)
+	{
+		if(devId == children[i].getId())
+		{
+			valid = true;
+			child = &children[i];
+			return child;
+		}
+	}
+	valid = false;
+	return child;
 }

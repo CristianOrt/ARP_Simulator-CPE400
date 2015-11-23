@@ -6,16 +6,20 @@
 #include <ostream>
 #include <fstream>
 #include "Device.h"
-#include "AddressGenerator.h"
 
 class LAN{
 public:
 	//Constructors
-	LAN(std::string macPrefix, std::string ipPrefix, std::string name);
+	LAN(std::string macNum, std::string ipNum, std::string name);
 	~LAN(){};
 	std::string getId(){return id;};
 
 	bool insertChild(std::string deviceName, bool MITM = false);
+	std::string macGen();
+	std::string ipGen();
+	Device* find(std::string devId, bool& valid);
+
+
 
 
 	//GenerateGraphiz
@@ -33,8 +37,10 @@ public:
 private:
 std::string ip;
 std::string id;
-static AddressGenerator macGen;
-static AddressGenerator ipGen;
+std::string ipPrefix;
+std::string macPrefix;
+int macCount;
+int ipCount;
 std::vector<Device> children;
 
 };

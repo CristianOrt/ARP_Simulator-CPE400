@@ -2,10 +2,6 @@
 #include <iostream>
 
 using namespace std;
-Router::Router(std::string name)
-{
-	id = name;
-}
 
 bool Router::insertLAN(LAN temp)
 {
@@ -73,4 +69,37 @@ void Router::Display(){
       child->Display();
 			std::cout << std::endl;
 		}
+}
+
+LAN* Router::find(std::string lanId, bool& valid){
+	LAN* child = NULL;
+	for( int i=0; i < children.size(); i++)
+	{
+		if(lanId == children[i].getId())
+		{
+			valid = true;
+			child = &children[i];
+			return child;
+		}
+	}
+	valid = false;
+	return child;
+}
+
+Device* Router::findDevice(std::string devId, bool &valid)
+{
+	//traverse each LAN
+	Device* childDev = NULL;
+	LAN* childLAN = NULL;
+
+	for( int i=0; i < children.size(); i++)
+	{
+		childLAN = &children[i];
+		childDev = childLAN->find(devId, valid);
+		if(valid)
+		{
+			return childDev;
+		}
+	}
+	return childDev;
 }

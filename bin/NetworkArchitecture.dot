@@ -12,7 +12,7 @@ digraph Network {
 <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="3">
 	<TR><TD COLSPAN="3">Device_A</TD></TR>
 	<TR><TD COLSPAN="3">IP: 192.16.12.01</TD></TR>
-	<TR><TD COLSPAN="3">MAC: 1A.78.6D.01</TD></TR>
+	<TR><TD COLSPAN="3">MAC: 01</TD></TR>
 </TABLE>>];
 edge [color=black];
 LAN_A -> Device_A
@@ -25,10 +25,32 @@ main ->LAN_A
 		Device_B[shape=none, margin=0, label=<
 <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="3">
 	<TR><TD COLSPAN="3"><FONT COLOR="red">Device_B</FONT></TD></TR>
-	<TR><TD COLSPAN="3">IP: 192.54.46.02</TD></TR>
-	<TR><TD COLSPAN="3">MAC: 24.56.8D02</TD></TR>
+	<TR><TD COLSPAN="3">IP: 192.54.46.01</TD></TR>
+	<TR><TD COLSPAN="3">MAC: 01</TD></TR>
 </TABLE>>];
 edge [color=red];
 LAN_B -> Device_B
+		Device_D[shape=none, margin=0, label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="3">
+	<TR><TD COLSPAN="3">Device_D</TD></TR>
+	<TR><TD COLSPAN="3">IP: 192.54.46.02</TD></TR>
+	<TR><TD COLSPAN="3">MAC: 02</TD></TR>
+</TABLE>>];
+edge [color=black];
+LAN_B -> Device_D
 main ->LAN_B
+		LAN_C[shape=none, margin=0, label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="2">
+	<TR><TD COLSPAN="3">LAN_C</TD></TR>
+	<TR><TD COLSPAN="3">IP: 192.54.49.00</TD></TR>
+</TABLE>>];
+		Device_C[shape=none, margin=0, label=<
+<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="3">
+	<TR><TD COLSPAN="3">Device_C</TD></TR>
+	<TR><TD COLSPAN="3">IP: 192.54.49.01</TD></TR>
+	<TR><TD COLSPAN="3">MAC: 01</TD></TR>
+</TABLE>>];
+edge [color=black];
+LAN_C -> Device_C
+main ->LAN_C
 }

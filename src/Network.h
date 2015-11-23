@@ -11,11 +11,11 @@ std::string message;
 class Network {
 public:
 //Constructor & Destructor
-Network();
-~Network();
+Network(std::string );
+~Network(){};
 
 //Display
-void DisplayTutorial();
+void DisplayInit();
 void DisplayMainMenu();
 
 //Simulate
@@ -23,13 +23,18 @@ void SimulateARP();
 void SimulateSpoofing();
 
 //helpers
-void sendMessage();
 void broadcast();
+
+//options
+void insertStaticEntry();
+void insertDeviceDisplay();
+void insertLANDisplay();
+void sendMessage(Device src, Device dest);
 
 
 
 private:
-Router mainRouter();
+Router mainRouter;
 
 };
 #endif

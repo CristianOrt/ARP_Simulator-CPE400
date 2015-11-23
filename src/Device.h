@@ -35,13 +35,13 @@ bool insertToArpTable(std::string mac, std::string ip, bool isStatic, bool MITM)
 bool isARPEntryMITM(arpEntry temp){return temp.MITM;};
 bool searchARPTable(std::string ip, arpEntry& dest);
 void clearARPTable(){arpTable.clear();};
+std::map<std::string, arpEntry> arpTable;
 
 
 private:
 std::string id;
 std::string macAddr;
 std::string ipAddr;
-std::map<std::string, arpEntry> arpTable;
 bool isMITM;
 };
 #endif

@@ -1,0 +1,24 @@
+ARP Simulator
+setup first LAN: 
+insert LAN name (no spaces): insert first 3 segments of ip: 
+(example: '192.14.15.') the program will generate the last portion
+insert first 4 segments of mac: 
+(example: '01-23-98-ab-89-') the program will generate the last portion
+
+setup first Device in LAN: 
+insert name of LAN to insert device: insert name of device: is your device mallicious: (y/n) 
+This simulator can demonstrate ARP,
+ARP spoofing, ARP proxy, and prevention of ARP
+spoofing with static entries
+Press any letter to continue ... 
+The main menu will allow you to add more LAN networks
+Devices, sendMessages, and create static entries.
+Also you may see your network in
+../bin called 'Network_Architecture'
+Choose an option
+a:insert static entry
+b:insert Device
+c:insert LAN
+d:send Message
+e:generate new graph
+f:Quit

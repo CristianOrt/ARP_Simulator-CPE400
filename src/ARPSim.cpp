@@ -8,16 +8,33 @@ using namespace std;
 
 int main()
 {
+	
+	Network mainNet("main");
+	mainNet.DisplayInit();
+	mainNet.DisplayMainMenu();
+/*
+std::string lan1, lan2, dev1,dev2;
+Router router;
 
-Router router("main");
-LAN A("1A.78.6D.", "192.16.12.", "LAN_A");
-router.insertLAN(A);
-router.insertDevice("LAN_A", "Device_A",false);
-LAN B("24.56.8D","192.54.46.","LAN_B");
-router.insertLAN(B);
-router.insertDevice("LAN_B","Device_B",true);
-router.Display();
-router.GenerateGraphviz("NetworkArchitecture");
+router.setName("main");
+LAN lanA ("12-89-56-48-78-", "192.15.14.", "LAN_A");
+router.insertLAN(lanA);
+router.insertDevice("LAN_A", "devA", false);
+router.insertDevice("LAN_A", "devB", false);
+router.GenerateGraphviz("temp");
+*/
+
+//now i need to make a static entry between devA and devB
+/*
+bool validDev;
+Device* devIt;
+devIt = router.findDevice("devA", validDev );
+
+//use lanIt and now find devices
+if(validDev){cout << devIt->getId() << endl;}
+else{cout << "nope" << endl;}
+*/
+
 return 0;
 }
 	
